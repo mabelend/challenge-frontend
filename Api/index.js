@@ -1,3 +1,4 @@
+const express = require("express");
 var app = express();
 var router = express.Router();
 
@@ -27,4 +28,12 @@ router.get('/user/:id', function (req, res, next) {
   res.render('special');
 });
 
+router.get(function (req, res, next) {
+  res.render('Hola mundo');
+});
+
 app.use('/', router);
+
+app.listen(3000, () => {
+  console.log("El servidor está inicializado en el puerto 3000");
+ });

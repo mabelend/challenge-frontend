@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/mabelend/challenge-frontend/issues"
   },
-  "homepage": "https://github.com/mabelend/challenge-frontend#readme"
+  "homepage": "https://github.com/mabelend/challenge-frontend#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "express": "^4.17.1",
+    "index.js": "0.0.3"
+  }
 }
