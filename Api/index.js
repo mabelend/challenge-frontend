@@ -1,7 +1,15 @@
 const express = require('express');
 const app = express();
 const axios = require('axios');
+const cors = require('cors')
 
+app.use(cors)
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/api', (req,res) => {
   res.send(`<div>
@@ -99,6 +107,7 @@ app.get('/api/items/:id', (req, res) => {
         res.status(200)
         res.json(body)
         
+
       }).catch((err) => {
         res.status(400).send('Ha ocurrido un error a la hora de buscar detalles del producto. Intente mas tarde. ' + err);
         return
