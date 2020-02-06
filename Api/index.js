@@ -1,17 +1,17 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const axios = require('axios');
 
 
 app.get('/api', (req,res) => {
-  console.log("Welcome to Api")
-  res.send("Welcome to Api O")
+  res.send(`<div>
+               <h3>Welcome to Api<h3>
+            <div>`)
 })
 
-app.get("/api/items", (req,res) => {
+app.get('/api/items', (req,res) => {
   const query = req.query.q;
   if(query){
-    // Make a request for a user with a given ID
     axios.get('https://api.mercadolibre.com/sites/MLA/search?q=' + query)
     .then(function (response) {
         let items = []
@@ -19,7 +19,7 @@ app.get("/api/items", (req,res) => {
         for (let i = 0; i<4; i++){
             let el = response.data.results[i]
             let condition = el.attributes.find((x) => {
-                if (x.name == "Condición del ítem"){
+                if (x.name == 'Condición del ítem'){
                     return x.value_name
                 }
             })
@@ -40,7 +40,7 @@ app.get("/api/items", (req,res) => {
             items.push(item)
         }
         let categories = response.data.filters.map((x) => {
-            if (x.name == "Categorías"){
+            if (x.name == 'Categorías'){
                 return x.values.name
             }
         })
@@ -52,15 +52,15 @@ app.get("/api/items", (req,res) => {
             categories: categories,
             items : items,
         }
-        res.statusCode(200)
+        res.status(200)
         res.json(list)
     })
     .catch(function (error) {
-      res.status(400).send("Ha ocurrido un error a la hora de buscar productos. Intente mas tarde");
+      res.status(400).send('Ha ocurrido un error a la hora de buscar productos. Intente mas tarde. Error: ' + error);
       return;
     })
     .finally(function () {
-     console.log("Response sent: " + res.statusCode)
+     console.log('Response sent: ' + res.statusCode)
     }); 
   }else{
     res.status(404).send(res.json({}));
@@ -77,8 +77,8 @@ app.get('/api/items/:id', (req, res) => {
     .then(function (response) {
         body += {
           author: {
-            name: "Pepe",
-            lastname: "Mujica" 
+            name: 'Marcelo',
+            lastname: 'Gallardo' 
           },
           item: {
            id: response.data.id, 
@@ -96,15 +96,15 @@ app.get('/api/items/:id', (req, res) => {
           } 
         };
       }).catch((err) => {
-        res.status(400).send("Ha ocurrido un error a la hora de buscar detalles del producto. Intente mas tarde");
+        res.status(400).send('Ha ocurrido un error a la hora de buscar detalles del producto. Intente mas tarde');
         return
       })
       .finally((res) => {
-        console.log("Response sent: " + res.statusCode)
+        res.status(404).send('No se ha encontrado el detalle del producto')
       })
   }
 });
 
 app.listen(8000, () => {
-  console.log("El servidor está inicializado en el puerto 8000");
+  console.log('El servidor está inicializado en el puerto 8000');
  });
