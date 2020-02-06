@@ -52,7 +52,7 @@ app.get("/api/items", (req,res) => {
             categories: categories,
             items : items,
         }
-        res.statusCode(200)
+        res.status(200)
         res.json(list)
     })
     .catch(function (error) {

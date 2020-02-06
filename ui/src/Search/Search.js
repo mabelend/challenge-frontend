@@ -1,7 +1,7 @@
 import React from 'react';
 import './Search.scss'
 import logo from './../assets/Logo_ML.png'
-import searchProduct from './SearchProduct.js'
+import searchProductgit from './SearchProduct.js'
 
 const ownSearchProduct = () => {
     const id = document.getElementById("searchInput").value;
