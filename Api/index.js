@@ -31,7 +31,7 @@ app.get('/api/items', (req,res) => {
                 price: {
                     currency: el.currency_id,
                     amount: el.price,
-                    decimals: Number, //que son??,
+                    decimals: response.data.price - Math.floor(response.data.price),
                     picture:  el.thumbnail, 
                     condition: condition,
                     free_shipping: el.shipping.free_shipping
@@ -73,34 +73,39 @@ app.get('/api/items/:id', (req, res) => {
   const id = req.params.id
 
   if(id){
-    axios.get('https://api.mercadolibre.com/api/items/' + id)
+    axios.get('https://api.mercadolibre.com/items/' + id)
     .then(function (response) {
-        body += {
-          author: {
-            name: 'Marcelo',
-            lastname: 'Gallardo' 
-          },
-          item: {
-           id: response.data.id, 
-           title: response.data.title, 
-           price: {
-            currency: response.data.currency_id, 
-            amount: response.data.price,
-            decimals: response.data.price - Math.floor(data.price),
-          },
-          picture: response.data.pictures[0], 
-            condition: response.data.condition, 
-            free_shipping: response.data.shipping.free_shipping, 
-            sold_quantity: response.data.sold_quantity,
-            description: ''
-          } 
-        };
+        let body = {
+              author: {
+                name: 'Marcelo',
+                lastname: 'Gallardo' 
+              },
+              item: {
+              id: response.data.id, 
+              title: response.data.title, 
+              price: {
+                currency: response.data.currency_id, 
+                amount: response.data.price,
+                decimals: response.data.price - Math.floor(response.data.price),
+              },
+              picture: response.data.pictures[0], 
+                condition: response.data.condition, 
+                free_shipping: response.data.shipping.free_shipping, 
+                sold_quantity: response.data.sold_quantity,
+                description: ''
+              } 
+            };
+            
+        res.status(200)
+        res.json(body)
+        
       }).catch((err) => {
-        res.status(400).send('Ha ocurrido un error a la hora de buscar detalles del producto. Intente mas tarde');
+        res.status(400).send('Ha ocurrido un error a la hora de buscar detalles del producto. Intente mas tarde. ' + err);
         return
       })
       .finally((res) => {
-        res.status(404).send('No se ha encontrado el detalle del producto')
+        res.status(404).send('No se ha encontrado el detalle del producto');
+        return;
       })
   }
 });
